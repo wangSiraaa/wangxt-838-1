@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useCallback } from 'react';
 import { LayoutGrid, ShoppingBag, Users, Droplets } from 'lucide-react';
 import { StatsCard } from '../components/features/StatsCard';
 import { SizeFilterBar } from '../components/features/SizeFilterBar';
@@ -7,7 +7,7 @@ import { SkateCard } from '../components/features/SkateCard';
 import { RentalModal } from '../components/features/RentalModal';
 import { useSkateStore } from '../stores/useSkateStore';
 import { useUiStore } from '../stores/useUiStore';
-import { SkateStatus, InventoryStats, Skate } from '../types';
+import { SkateStatus, InventoryStats, Skate, SizeFilter } from '../types';
 
 function calculateStats(skates: Skate[]): InventoryStats {
   return {
@@ -22,6 +22,13 @@ export function Dashboard() {
   const skates = useSkateStore(state => state.skates);
   const getSkatesBySize = useSkateStore(state => state.getSkatesBySize);
   const { sizeFilter } = useUiStore();
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const handleSizeSelect = useCallback((size: SizeFilter) => {
+    if (gridRef.current) {
+      gridRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
 
   const stats = useMemo(() => calculateStats(skates), [skates]);
 
@@ -84,9 +91,9 @@ export function Dashboard() {
         />
       </div>
 
-      <SizeFilterBar />
+      <SizeFilterBar onSizeSelect={handleSizeSelect} />
 
-      <div>
+      <div ref={gridRef} id="skate-grid-section">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-slate-900">
             {sizeFilter === 'all' ? '全部冰鞋' : `${sizeFilter}码冰鞋`}

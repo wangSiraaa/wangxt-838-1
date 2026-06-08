@@ -11,7 +11,7 @@ import { useValidation } from '../../hooks/useValidation';
 import { STATUS_LABELS } from '../../utils/constants';
 
 export function RentalModal() {
-  const { showRentalModal, setShowRentalModal, selectedSkateId, setSelectedSkateId } = useUiStore();
+  const { showRentalModal, setShowRentalModal, selectedSkateId, setSelectedSkateId, addToast } = useUiStore();
   const getSkateById = useSkateStore(state => state.getSkateById);
   const { rentals, createRental } = useRentalStore();
   const { errors, validatePhone, validateName, validatePhoneRentable, clearAllErrors } = useValidation();
@@ -46,8 +46,8 @@ export function RentalModal() {
     const phoneRentable = validatePhoneRentable(phone, latestRentals);
 
     if (!isNameValid || !isPhoneValid || !phoneRentable.valid) {
-      if (!phoneRentable.valid) {
-        alert(phoneRentable.message);
+      if (!phoneRentable.valid && phoneRentable.message) {
+        addToast('error', phoneRentable.message);
       }
       return;
     }
@@ -60,11 +60,11 @@ export function RentalModal() {
         customerName: customerName.trim()
       });
 
-      if (result.success) {
-        alert(`租借成功！\n租借单号：${result.order?.orderNo}`);
+      if (result.success && result.order) {
+        addToast('success', `租借成功！租借单号：${result.order.orderNo}`);
         handleClose();
       } else {
-        alert(result.message);
+        addToast('error', result.message || '租借失败');
       }
     } finally {
       setSubmitting(false);

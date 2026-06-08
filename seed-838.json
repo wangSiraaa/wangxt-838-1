@@ -1,0 +1,105 @@
+{
+  "seed": "838",
+  "description": "冰场租鞋尺码看板 - 测试样例数据",
+  "createdAt": "2026-06-08T00:00:00.000Z",
+  "skates": [
+    {
+      "id": "seed-skate-001",
+      "skateCode": "SK-38-001",
+      "size": 38,
+      "status": "AVAILABLE",
+      "brand": "Bauer",
+      "color": "黑色",
+      "createdAt": "2026-05-01T00:00:00.000Z",
+      "updatedAt": "2026-06-08T00:00:00.000Z"
+    },
+    {
+      "id": "seed-skate-002",
+      "skateCode": "SK-38-002",
+      "size": 38,
+      "status": "RENTED",
+      "brand": "CCM",
+      "color": "白色",
+      "createdAt": "2026-05-02T00:00:00.000Z",
+      "updatedAt": "2026-06-08T00:00:00.000Z"
+    },
+    {
+      "id": "seed-skate-003",
+      "skateCode": "SK-38-003",
+      "size": 38,
+      "status": "DISINFECTING",
+      "brand": "Graf",
+      "color": "蓝色",
+      "createdAt": "2026-05-03T00:00:00.000Z",
+      "updatedAt": "2026-06-08T00:00:00.000Z"
+    },
+    {
+      "id": "seed-skate-004",
+      "skateCode": "SK-40-001",
+      "size": 40,
+      "status": "AVAILABLE",
+      "brand": "Jackson",
+      "color": "红色",
+      "createdAt": "2026-05-04T00:00:00.000Z",
+      "updatedAt": "2026-06-08T00:00:00.000Z"
+    },
+    {
+      "id": "seed-skate-005",
+      "skateCode": "SK-42-001",
+      "size": 42,
+      "status": "AVAILABLE",
+      "brand": "Edea",
+      "color": "灰色",
+      "createdAt": "2026-05-05T00:00:00.000Z",
+      "updatedAt": "2026-06-08T00:00:00.000Z"
+    },
+    {
+      "id": "seed-skate-006",
+      "skateCode": "SK-39-001",
+      "size": 39,
+      "status": "AVAILABLE",
+      "brand": "Riedell",
+      "color": "粉色",
+      "createdAt": "2026-05-06T00:00:00.000Z",
+      "updatedAt": "2026-06-08T00:00:00.000Z"
+    }
+  ],
+  "rentals": [
+    {
+      "id": "seed-rental-001",
+      "orderNo": "IC2606080001",
+      "skateId": "seed-skate-002",
+      "phone": "13900139000",
+      "customerName": "测试用户",
+      "rentTime": "2026-06-08T09:00:00.000Z",
+      "expectedReturnTime": "2026-06-09T21:00:00.000Z",
+      "status": "RENTING",
+      "createdAt": "2026-06-08T09:00:00.000Z",
+      "updatedAt": "2026-06-08T09:00:00.000Z"
+    },
+    {
+      "id": "seed-rental-002",
+      "orderNo": "IC2606070002",
+      "skateId": "seed-skate-003",
+      "phone": "13800138000",
+      "customerName": "已归还用户",
+      "rentTime": "2026-06-07T10:00:00.000Z",
+      "expectedReturnTime": "2026-06-08T21:00:00.000Z",
+      "actualReturnTime": "2026-06-08T08:00:00.000Z",
+      "status": "RETURNED",
+      "createdAt": "2026-06-07T10:00:00.000Z",
+      "updatedAt": "2026-06-08T08:00:00.000Z"
+    }
+  ],
+  "testCases": {
+    "phoneRepeatRental": {
+      "phone": "13900139000",
+      "expectedMessage": "该手机号尚有未归还的冰鞋，请先归还后再租借",
+      "skateId": "seed-skate-001"
+    },
+    "validRental": {
+      "phone": "13700137000",
+      "skateId": "seed-skate-004"
+    }
+  }
+}
