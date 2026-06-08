@@ -42,7 +42,8 @@ export function RentalModal() {
 
     const isNameValid = validateName(customerName);
     const isPhoneValid = validatePhone(phone);
-    const phoneRentable = validatePhoneRentable(phone, rentals);
+    const latestRentals = useRentalStore.getState().rentals;
+    const phoneRentable = validatePhoneRentable(phone, latestRentals);
 
     if (!isNameValid || !isPhoneValid || !phoneRentable.valid) {
       if (!phoneRentable.valid) {

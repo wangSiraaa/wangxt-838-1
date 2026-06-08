@@ -29,28 +29,29 @@ export function generateMockSkates(): Skate[] {
   const skates: Skate[] = [];
   let skateIndex = 1;
 
-  sizes.forEach(size => {
-    const count = 3 + Math.floor(Math.random() * 3);
+  sizes.forEach((size, sizeIndex) => {
+    const count = 4;
     for (let i = 0; i < count; i++) {
-      const statusRoll = Math.random();
       let status: SkateStatus;
-      if (statusRoll < 0.6) {
-        status = SkateStatus.AVAILABLE;
-      } else if (statusRoll < 0.85) {
+      if (i === 0) {
+        status = SkateStatus.DISINFECTING;
+      } else if (i === 1) {
         status = SkateStatus.RENTED;
       } else {
-        status = SkateStatus.DISINFECTING;
+        status = SkateStatus.AVAILABLE;
       }
 
       const now = new Date().toISOString();
+      const brandIndex = (sizeIndex + i) % BRAND_OPTIONS.length;
+      const colorIndex = (sizeIndex + i + 1) % COLOR_OPTIONS.length;
       skates.push({
         id: generateId(),
         skateCode: `SK-${size.toString().padStart(2, '0')}-${skateIndex.toString().padStart(3, '0')}`,
         size,
         status,
-        brand: getRandomItem(BRAND_OPTIONS),
-        color: getRandomItem(COLOR_OPTIONS),
-        createdAt: getDateOffset(-30 - Math.floor(Math.random() * 60)),
+        brand: BRAND_OPTIONS[brandIndex],
+        color: COLOR_OPTIONS[colorIndex],
+        createdAt: getDateOffset(-30 - ((sizeIndex * 3 + i) % 30)),
         updatedAt: now
       });
       skateIndex++;

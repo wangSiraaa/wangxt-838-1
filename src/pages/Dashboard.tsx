@@ -7,12 +7,23 @@ import { SkateCard } from '../components/features/SkateCard';
 import { RentalModal } from '../components/features/RentalModal';
 import { useSkateStore } from '../stores/useSkateStore';
 import { useUiStore } from '../stores/useUiStore';
-import { SkateStatus } from '../types';
+import { SkateStatus, InventoryStats, Skate } from '../types';
+
+function calculateStats(skates: Skate[]): InventoryStats {
+  return {
+    total: skates.length,
+    available: skates.filter(s => s.status === SkateStatus.AVAILABLE).length,
+    rented: skates.filter(s => s.status === SkateStatus.RENTED).length,
+    disinfecting: skates.filter(s => s.status === SkateStatus.DISINFECTING).length
+  };
+}
 
 export function Dashboard() {
-  const stats = useSkateStore(state => state.getStats());
+  const skates = useSkateStore(state => state.skates);
   const getSkatesBySize = useSkateStore(state => state.getSkatesBySize);
   const { sizeFilter } = useUiStore();
+
+  const stats = useMemo(() => calculateStats(skates), [skates]);
 
   const filteredSkates = useMemo(() => {
     return getSkatesBySize(sizeFilter);

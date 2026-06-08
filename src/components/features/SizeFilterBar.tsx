@@ -1,13 +1,29 @@
+import { useMemo } from 'react';
 import { Filter } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { SIZE_OPTIONS } from '../../utils/constants';
 import { useUiStore } from '../../stores/useUiStore';
 import { useSkateStore } from '../../stores/useSkateStore';
 import { cn } from '../../lib/utils';
+import { SkateStatus, SizeStats, Skate } from '../../types';
+
+function calculateSizeStats(skates: Skate[]): SizeStats[] {
+  return SIZE_OPTIONS.map(size => {
+    const sizeSkates = skates.filter(s => s.size === size);
+    return {
+      size,
+      total: sizeSkates.length,
+      available: sizeSkates.filter(s => s.status === SkateStatus.AVAILABLE).length,
+      rented: sizeSkates.filter(s => s.status === SkateStatus.RENTED).length,
+      disinfecting: sizeSkates.filter(s => s.status === SkateStatus.DISINFECTING).length
+    };
+  });
+}
 
 export function SizeFilterBar() {
   const { sizeFilter, setSizeFilter } = useUiStore();
-  const sizeStats = useSkateStore(state => state.getSizeStats());
+  const skates = useSkateStore(state => state.skates);
+  const sizeStats = useMemo(() => calculateSizeStats(skates), [skates]);
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-4">
